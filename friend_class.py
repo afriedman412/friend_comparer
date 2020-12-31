@@ -137,18 +137,21 @@ class friendComparer(Config):
             added_data = self.getScreenNames(self.added)
             unfollowed_data = self.getScreenNames(self.unfollowed)
             text_ = """
-            New friends:
+            New friends for {}:
             {}
             
-            Unfollowed:
+            Unfollowed by {}:
             {}
-            """.format(', '.join([f[1] for f in added_data]), ', '.join([f[1] for f in unfollowed_data]))
+            """.format(self.USER_NAME, 
+                ', '.join([f[1] for f in added_data]),
+                self.USER_NAME, 
+                ', '.join([f[1] for f in unfollowed_data]))
             print(text_)
             
             message = Mail(
             from_email=self.EMAIL_FROM,
             to_emails=self.EMAIL_TO,
-            subject='Friends Update',
+            subject='{} Friends Update'.format(self.USER_NAME),
             plain_text_content=text_
             )
         try:
