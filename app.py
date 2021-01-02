@@ -13,6 +13,6 @@ if __name__ == "__main__":
     # })
 
     friendInOne({
-        'USER_NAME':'_MichaelDawson_'
+        'USER_NAME':'_MichaelDawson_',
         'EMAIL_TO': ['afriedman412@gmail.com', 'walkmasterflex@gmail.com']
     })
