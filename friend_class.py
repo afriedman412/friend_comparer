@@ -7,7 +7,7 @@ from sendgrid.helpers.mail import Mail
 from pymongo import MongoClient
 
 def friendInOne(kwargs):
-    fc = friendComparer(kwargs)
+    fc = friendComparer(**kwargs)
     fc.wholeComparer()
     fc.updateFriends()
     fc.sendEmail()
@@ -84,8 +84,8 @@ class friendComparer(Config):
         """
         self.added = [f for f in self.new_friends if f not in self.og_friends]
         self.unfollowed = [f for f in self.og_friends if f not in self.new_friends]
-        print('added: ', str(len(self.added)))
-        print('unfollowed: ', str(len(self.unfollowed)))
+        print(self.USER_NAME, 'added: ', str(len(self.added)))
+        print(self.USER_NAME, 'unfollowed: ', str(len(self.unfollowed)))
 
     def getScreenNames(self, id_list):
         """
@@ -133,7 +133,7 @@ class friendComparer(Config):
         Update friends list in database
         """
         self.new_friend_data = self.getScreenNames(self.new_friends)
-        new_q = {'user_name': self.user_name}
+        new_q = {'user_name': self.USER_NAME}
         new_data = {'$set': {
             'friends': [{'user_id': f[0], 'user_name': f[1]} for f in self.new_friend_data],
             'user_name': self.USER_NAME

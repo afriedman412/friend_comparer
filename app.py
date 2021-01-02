@@ -5,7 +5,7 @@ if __name__ == "__main__":
     # fc.wholeComparer()
     # fc.updateFriends()
     # fc.sendEmail()
-    friendInOne()
+    friendInOne({})
 
     # fc = friendComparer({
     #     'USER_NAME':'_MichaelDawson_'
@@ -14,5 +14,5 @@ if __name__ == "__main__":
 
     friendInOne({
         'USER_NAME':'_MichaelDawson_',
-        'EMAIL_TO': ['afriedman412@gmail.com', 'walkmasterflex@gmail.com']
+        'EMAIL_TO': 'afriedman412@gmail.com'
     })
