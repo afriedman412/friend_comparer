@@ -7,6 +7,7 @@ from sendgrid.helpers.mail import Mail
 from pymongo import MongoClient
 
 def friendInOne(kwargs):
+    print(kwargs)
     fc = friendComparer(**kwargs)
     fc.wholeComparer()
     fc.updateFriends()
@@ -15,8 +16,6 @@ def friendInOne(kwargs):
 class friendComparer(Config):
     def __init__(self, **kwargs):
         super().__init__()
-        self.dbClient()
-        self.tweepyClient()
 
         if 'USER_NAME' in kwargs:
             self.USER_NAME = kwargs['USER_NAME']
@@ -27,6 +26,10 @@ class friendComparer(Config):
         if 'EMAIL_TO' in kwargs:
             self.EMAIL_TO = ','.join(kwargs['EMAIL_TO'])
         
+        print('running friend comparer for: ', self.USER_NAME)
+        self.dbClient()
+        self.tweepyClient()
+
         return
     
     def dbClient(self):
