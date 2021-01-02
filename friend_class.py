@@ -6,12 +6,27 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from pymongo import MongoClient
 
+def friendInOne(kwargs):
+    fc = friendComparer(kwargs)
+    fc.wholeComparer()
+    fc.updateFriends()
+    fc.sendEmail()
+
 class friendComparer(Config):
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__()
-        self.user_name = self.USER_NAME
         self.dbClient()
         self.tweepyClient()
+
+        if 'USER_NAME' in kwargs:
+            self.USER_NAME = kwargs['USER_NAME']
+
+        if 'EMAIL_FROM' in kwargs:
+            self.EMAIL_FROM = kwargs['EMAIL_FROM']
+        
+        if 'EMAIL_TO' in kwargs:
+            self.EMAIL_TO = ','.join(kwargs['EMAIL_TO'])
+        
         return
     
     def dbClient(self):
@@ -26,17 +41,17 @@ class friendComparer(Config):
         
         self.col = self.client['db']['all_users']
         try:
-            og_friends = [f for f in self.col.find({'user_name': self.user_name})][0]['friends']
+            og_friends = [f for f in self.col.find({'user_name': self.USER_NAME})][0]['friends']
             self.og_friends = [f['user_id'] for f in og_friends] # only need user ids
         except IndexError:
             print('no data found, making blank data')
             self.col.insert_one(
                 {
-                    'user_name': self.user_name,
+                    'user_name': self.USER_NAME,
                     'friends': []
                 }
             )
-            self.og_friends = [f for f in self.col.find({'user_name': self.user_name})][0]['friends']
+            self.og_friends = [f for f in self.col.find({'user_name': self.USER_NAME})][0]['friends']
 
         
     def tweepyClient(self):
@@ -59,7 +74,7 @@ class friendComparer(Config):
         """
         self.new_friends = []
         page_count = 0
-        for page in tweepy.Cursor(self.api.friends_ids, id=self.user_name, count=5000).pages():
+        for page in tweepy.Cursor(self.api.friends_ids, id=self.USER_NAME, count=5000).pages():
             page_count += 1
             self.new_friends.extend(page)
 
@@ -121,7 +136,7 @@ class friendComparer(Config):
         new_q = {'user_name': self.user_name}
         new_data = {'$set': {
             'friends': [{'user_id': f[0], 'user_name': f[1]} for f in self.new_friend_data],
-            'user_name': self.user_name
+            'user_name': self.USER_NAME
         }
                    }
         
