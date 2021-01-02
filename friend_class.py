@@ -6,25 +6,32 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from pymongo import MongoClient
 
-def friendInOne(kwargs):
-    print(kwargs)
-    fc = friendComparer(**kwargs)
+def friendInOne(
+    USER_NAME=None,
+    EMAIL_TO=None,
+    EMAIL_FROM=None
+):
+    fc = friendComparer(USER_NAME, EMAIL_TO, EMAIL_FROM)
     fc.wholeComparer()
     fc.updateFriends()
     fc.sendEmail()
 
 class friendComparer(Config):
-    def __init__(self, **kwargs):
+    def __init__(self, 
+        USER_NAME=None,
+        EMAIL_TO=None,
+        EMAIL_FROM=None
+        ):
         super().__init__()
 
-        if 'USER_NAME' in kwargs:
-            self.USER_NAME = kwargs['USER_NAME']
+        if USER_NAME is not None:
+            self.USER_NAME = USER_NAME
 
-        if 'EMAIL_FROM' in kwargs:
-            self.EMAIL_FROM = kwargs['EMAIL_FROM']
+        if EMAIL_FROM is not None:
+            self.EMAIL_FROM = EMAIL_FROM
         
-        if 'EMAIL_TO' in kwargs:
-            self.EMAIL_TO = ','.join(kwargs['EMAIL_TO'])
+        if EMAIL_TO is not None:
+            self.EMAIL_TO = EMAIL_TO
         
         print('running friend comparer for: ', self.USER_NAME)
         self.dbClient()

@@ -1,11 +1,18 @@
-from friend_class import friendComparer, friendInOne
+from friend_class import friendInOne
 
 if __name__ == "__main__":
-    # actual run
-    friendInOne({})
+    # actual runs
+    friendInOne(
+        USER_NAME='realwuzhe'
+    )
 
-    # control run
-    friendInOne({
-        'USER_NAME':'_MichaelDawson_',
-        'EMAIL_TO': 'afriedman412@gmail.com'
-    })
+    friendInOne(
+        USER_NAME='basedfroq'
+    )
+
+    friendInOne(
+        USER_NAME='cryptospider1'
+    )
+
+    # # control run
+    # friendInOne()
